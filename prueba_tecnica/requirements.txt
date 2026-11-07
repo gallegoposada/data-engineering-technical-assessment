@@ -1,0 +1,11 @@
+# --- Para ejecutar el pipeline ---
+pandas>=2.2
+psycopg2-binary>=2.9
+python-dotenv>=1.0
+
+# --- Solo para convertir el .xlsx a CSV (src/xlsx_a_csv.py) ---
+openpyxl>=3.1
+
+# --- Solo para desarrollo: pruebas y revisión de estilo ---
+pytest>=8.0
+ruff>=0.6

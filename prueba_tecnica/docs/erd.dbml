@@ -1,0 +1,109 @@
+// Modelo 3FN de ofertas laborales. Pegar en https://dbdiagram.io/d para ver el diagrama interactivo.
+
+Table companies {
+  company_id integer [pk]
+  company_name text [not null, unique]
+}
+
+Table platforms {
+  platform_id integer [pk]
+  platform_name text [not null, unique]
+}
+
+Table title_categories {
+  title_category_id integer [pk]
+  title_category_name text [not null, unique]
+}
+
+Table countries {
+  country_id integer [pk]
+  country_name text [not null, unique]
+}
+
+Table search_locations {
+  search_location_id integer [pk]
+  search_location_name text [not null, unique]
+  country_id integer
+}
+
+Table locations {
+  location_id integer [pk]
+  location_name text [not null, unique]
+}
+
+Table schedule_types {
+  schedule_type_id integer [pk]
+  schedule_type_name text [not null, unique]
+}
+
+Table skills {
+  skill_id integer [pk]
+  skill_name text [not null, unique]
+}
+
+Table skill_types {
+  skill_type_id integer [pk]
+  skill_type_name text [not null, unique]
+}
+
+Table jobs {
+  job_id integer [pk]
+  job_title text [not null]
+  title_category_id integer [not null]
+  company_id integer [not null]
+  platform_id integer [not null]
+  location_id integer
+  search_location_id integer [not null]
+  posted_at timestamp [not null]
+  job_work_from_home boolean [not null]
+  job_no_degree_mention boolean [not null]
+  job_health_insurance boolean [not null]
+}
+
+Table job_salaries {
+  job_id integer [pk]
+  salary_rate text [not null]
+  salary_year_avg numeric(12,2)
+  salary_hour_avg numeric(10,2)
+}
+
+Table job_schedules {
+  job_id integer
+  schedule_type_id integer
+
+  indexes {
+    (job_id, schedule_type_id) [pk]
+  }
+}
+
+Table job_skills {
+  job_id integer
+  skill_id integer
+
+  indexes {
+    (job_id, skill_id) [pk]
+  }
+}
+
+Table skill_type_links {
+  skill_id integer
+  skill_type_id integer
+
+  indexes {
+    (skill_id, skill_type_id) [pk]
+  }
+}
+
+Ref: search_locations.country_id > countries.country_id
+Ref: jobs.title_category_id > title_categories.title_category_id
+Ref: jobs.company_id > companies.company_id
+Ref: jobs.platform_id > platforms.platform_id
+Ref: jobs.location_id > locations.location_id
+Ref: jobs.search_location_id > search_locations.search_location_id
+Ref: job_salaries.job_id - jobs.job_id
+Ref: job_schedules.job_id > jobs.job_id
+Ref: job_skills.job_id > jobs.job_id
+Ref: job_schedules.schedule_type_id > schedule_types.schedule_type_id
+Ref: job_skills.skill_id > skills.skill_id
+Ref: skill_type_links.skill_id > skills.skill_id
+Ref: skill_type_links.skill_type_id > skill_types.skill_type_id
